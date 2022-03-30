@@ -2,6 +2,7 @@ package ru.sumin.coroutinestart
 
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -40,7 +41,19 @@ class MainActivity : AppCompatActivity() {
     private fun loadCity(callback: (String) -> Unit) {
         thread{
             Thread.sleep(5000)
-            handler.post {
+                //1-й вариант
+//            handler.post {
+//                callback("Moscow")
+//            }
+//            Handler(Looper.getMainLooper()).post (Runnable {
+//                callback("Moscow")
+//            })
+            //2-й вариант
+//            Handler(Looper.getMainLooper()).post {
+//                callback("Moscow")
+//            }
+            //3-й вариант
+            runOnUiThread {
                 callback("Moscow")
             }
         }
@@ -48,7 +61,24 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadTemperature(city: String, callback: (Int) -> Unit) {
         thread {
-            handler.post {
+            //1-й вариант
+//            handler.post {
+//                Toast.makeText(
+//                    this,
+//                    getString(R.string.loading_temperature_toast, city),
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }
+            //2-й вариант
+//            Handler(Looper.getMainLooper()).post {
+//                Toast.makeText(
+//                    this,
+//                    getString(R.string.loading_temperature_toast, city),
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }
+            //3-й вариант
+            runOnUiThread {
                 Toast.makeText(
                     this,
                     getString(R.string.loading_temperature_toast, city),
@@ -56,7 +86,16 @@ class MainActivity : AppCompatActivity() {
                 ).show()
             }
             Thread.sleep(5000)
-            handler.post {
+
+//            handler.post {
+//                callback(17)
+//            }
+
+//            Handler(Looper.getMainLooper()).post {
+//                callback(17)
+//            }
+
+            runOnUiThread {
                 callback(17)
             }
         }
