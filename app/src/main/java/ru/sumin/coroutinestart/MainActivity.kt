@@ -3,6 +3,7 @@ package ru.sumin.coroutinestart
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.Message
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -17,12 +18,21 @@ class MainActivity : AppCompatActivity() {
 
     private val handler = Handler()
 
+    private val handler1 = object : Handler() {
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            println("Handle_MSG $msg")
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         binding.buttonLoad.setOnClickListener {
             loadData()
         }
+        //можно отправлять сообщения через handler
+        handler1.sendMessage(Message.obtain(handler1, 0, 17))
     }
 
     private fun loadData() {
@@ -98,6 +108,8 @@ class MainActivity : AppCompatActivity() {
             runOnUiThread {
                 callback(17)
             }
+
+
         }
     }
 }
